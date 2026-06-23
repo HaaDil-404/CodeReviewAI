@@ -1,14 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { runAnalysis } from "@/services/analyze.service";
-
 import Report from "@/models/Report";
-
 import { connectDB } from "@/lib/db";
-
 import { getUserFromToken } from "@/lib/getUserFromToken";
 
-export async function POST(req: Request) {
+export async function GET() {
   try {
     await connectDB();
 
@@ -25,24 +21,15 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json();
-
-    const analysis = await runAnalysis(body.code, body.language);
-
-    const report = await Report.create({
+    const reports = await Report.find({
       userId: user._id.toString(),
-
-      code: body.code,
-
-      language: body.language,
-
-      ...analysis,
+    }).sort({
+      createdAt: -1,
     });
 
     return NextResponse.json({
       success: true,
-
-      data: report,
+      reports,
     });
   } catch (error) {
     console.error(error);
@@ -50,8 +37,6 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-
-        message: "Analysis failed",
       },
       {
         status: 500,

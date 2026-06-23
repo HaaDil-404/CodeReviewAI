@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 
 interface Props {
@@ -10,21 +11,58 @@ export default function ScoreCard({
     score,
 }: Props) {
 
+    function getStatus() {
+
+        if (score >= 80)
+            return "Excellent";
+
+        if (score >= 60)
+            return "Good";
+
+        return "Poor";
+    }
+
     return (
 
-        <div className="rounded-2xl border bg-card p-6">
+        <motion.div
+            initial={{
+                opacity: 0,
+                y: 20
+            }}
+            animate={{
+                opacity: 1,
+                y: 0
+            }}
+            transition={{
+                duration: .3
+            }}
+            className="rounded-3xl border bg-background/60 backdrop-blur-xl shadow-xl transition-all hover:scale-[1.02] hover:shadow-2xl p-6"
+        >
 
-            <h2 className="mb-3 text-lg font-semibold">
+            <h2 className="text-lg font-semibold">
+
                 {title}
+
             </h2>
 
-            <div className="mb-3 text-4xl font-bold">
-                {score}
+            <div className="mt-4 text-5xl font-bold">
+
+                {score}%
+
             </div>
 
-            <Progress value={score} />
+            <Progress
+                className="mt-5"
+                value={score}
+            />
 
-        </div>
+            <p className="mt-4 text-muted-foreground">
+
+                {getStatus()}
+
+            </p>
+
+        </motion.div>
 
     );
 }

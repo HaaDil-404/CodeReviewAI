@@ -5,34 +5,43 @@ Analyze the code.
 
 Return ONLY valid JSON.
 
-Do not wrap the response inside markdown.
-
-Do not use \`\`\`json.
-
-The response must exactly follow:
-
 {
   "qualityScore": number,
+
   "securityScore": number,
+
   "performanceScore": number,
+
   "maintainabilityScore": number,
 
-  "bugs": [
-    {
-      "title":"",
-      "description":""
-    }
+  "confidence": number,
+
+  "complexity": {
+      "timeComplexity":"",
+      "spaceComplexity":""
+  },
+
+  "bugs":[
+      {
+        "title":"",
+        "description":"",
+        "severity":"Low | Medium | High"
+      }
   ],
 
   "suggestions":[
+      {
+        "title":"",
+        "description":""
+      }
   ],
 
   "improvedCode":"",
 
   "interviewQuestions":{
-    "beginner":[],
-    "intermediate":[],
-    "advanced":[]
+      "beginner":[],
+      "intermediate":[],
+      "advanced":[]
   }
 }
 `;

@@ -13,6 +13,7 @@ export const analysisSchema = z.object({
     z.object({
       title: z.string(),
       description: z.string(),
+      severity: z.string(),
     }),
   ),
 
@@ -22,6 +23,13 @@ export const analysisSchema = z.object({
       description: z.string(),
     }),
   ),
+
+  confidence: z.number(),
+
+  complexity: z.object({
+    timeComplexity: z.string(),
+    spaceComplexity: z.string(),
+  }),
 
   improvedCode: z.string(),
 

@@ -1,90 +1,106 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
-import {
-    logoutUser,
-} from "@/services/auth.service";
-
+import { logoutUser } from "@/services/auth.service";
 import { useAuth } from "@/hooks/useAuth";
 
 import { Button } from "@/components/ui/button";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
-
     const router = useRouter();
+    const pathname = usePathname();
 
-    const {
-        user,
-        loading,
-    } = useAuth();
+    const { user, loading } = useAuth();
 
     async function handleLogout() {
-
         await logoutUser();
-
         router.push("/login");
-
         router.refresh();
     }
 
-    if (loading) {
-        return null;
-    }
+    if (loading) return null;
+
+    const navLinkStyle = (path: string) =>
+        `transition-colors duration-200 ${
+            pathname === path
+                ? "text-blue-500 font-semibold"
+                : "text-muted-foreground hover:text-foreground"
+        }`;
 
     return (
+        <nav className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
+            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+                
+                {/* Logo */}
+                <Link href="/">
+                    <h1 className="text-2xl font-bold tracking-tight">
+                        CodeReview AI
+                    </h1>
+                </Link>
 
-        <nav className="flex items-center justify-between border-b p-5">
+                {/* Navigation */}
+                <div className="flex items-center gap-6">
+                    {user ? (
+                        <>
+                            <Link
+                                href="/dashboard"
+                                className={navLinkStyle("/dashboard")}
+                            >
+                                Dashboard
+                            </Link>
 
-            <Link href="/">
-                <h1 className="text-xl font-bold">
-                    CodeReview AI
-                </h1>
-            </Link>
+                            <Link
+                                href="/analyzer"
+                                className={navLinkStyle("/analyzer")}
+                            >
+                                Analyzer
+                            </Link>
 
-            <div className="flex gap-4">
+                            <Link
+                                href="/history"
+                                className={navLinkStyle("/history")}
+                            >
+                                History
+                            </Link>
 
-                {user ? (
+                            <Link
+                                href="/profile"
+                                className={navLinkStyle("/profile")}
+                            >
+                                Profile
+                            </Link>
 
-                    <>
+                            <ThemeToggle />
 
-                        <Link href="/dashboard">
-                            Dashboard
-                        </Link>
+                            <Button
+                                variant="outline"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Link
+                                href="/login"
+                                className={navLinkStyle("/login")}
+                            >
+                                Login
+                            </Link>
 
-                        <Link href="/profile">
-                            Profile
-                        </Link>
-
-                        <Button
-                            variant="outline"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </Button>
-
-                    </>
-
-                ) : (
-
-                    <>
-
-                        <Link href="/login">
-                            Login
-                        </Link>
-
-                        <Link href="/register">
-                            Register
-                        </Link>
-
-                    </>
-
-                )}
-
+                            <Link
+                                href="/register"
+                                className={navLinkStyle("/register")}
+                            >
+                                Register
+                            </Link>
+                        </>
+                    )}
+                </div>
             </div>
-
         </nav>
-
     );
 }

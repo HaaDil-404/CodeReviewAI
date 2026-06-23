@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Providers from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import Navbar from "@/components/navbar/Navbar";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = {
   title: "CodeReview AI Lite",
@@ -17,11 +17,11 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body>
-        <Providers>
+        <ThemeProvider>
           <Navbar />
           {children}
           <Toaster richColors />
-        </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,7 +1,11 @@
+
+
 "use client";
 
 import { useState } from "react";
 import axios from "axios";
+import { motion } from "framer-motion";
+import InterviewTabs from "@/components/report/InterviewTabs";
 
 import CodeEditor from "@/components/code-editor/CodeEditor";
 import LanguageSelector from "@/components/analyzer/LanguageSelector";
@@ -11,6 +15,8 @@ import BugCard from "@/components/report/BugCard";
 import SuggestionCard from "@/components/report/SuggestionCard";
 import ImprovedCodeCard from "@/components/report/ImprovedCodeCard";
 import InterviewSection from "@/components/report/InterviewSection";
+import ConfidenceCard from "@/components/report/ConfidenceCard";
+import ComplexityCard from "@/components/report/ComplexityCard";
 
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +25,8 @@ import type { AnalysisResult } from "@/schemas/analysis.schema";
 export default function AnalyzerPage() {
     const [code, setCode] = useState("");
 
-    const [language, setLanguage] = useState("javascript");
+    const [language, setLanguage] =
+        useState("javascript");
 
     const [result, setResult] =
         useState<AnalysisResult | null>(null);
@@ -75,8 +82,20 @@ export default function AnalyzerPage() {
 
             {/* Score Cards */}
             {result && (
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.4,
+                    }}
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2"
+                >
                     <ScoreCard
                         title="Quality Score"
                         score={result.qualityScore}
@@ -96,88 +115,167 @@ export default function AnalyzerPage() {
                         title="Maintainability Score"
                         score={result.maintainabilityScore}
                     />
+                </motion.div>
+            )}
 
-                </div>
+            {/* Confidence & Complexity */}
+            {result && (
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.5,
+                    }}
+                    className="grid gap-6 md:grid-cols-2"
+                >
+                    <ConfidenceCard
+                        confidence={result.confidence}
+                    />
+
+                    <ComplexityCard
+                        timeComplexity={
+                            result.complexity.timeComplexity
+                        }
+                        spaceComplexity={
+                            result.complexity.spaceComplexity
+                        }
+                    />
+                </motion.div>
             )}
 
             {/* Bugs */}
             {result?.bugs.length !== 0 && (
-                <div className="space-y-4">
-
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.6,
+                    }}
+                    className="space-y-4"
+                >
                     <h2 className="text-2xl font-bold">
                         Bugs
                     </h2>
 
-                    {result?.bugs.map((bug) => (
-                        <BugCard
-                            key={bug.title}
-                            title={bug.title}
-                            description={bug.description}
-                        />
-                    ))}
-
-                </div>
+                    {result?.bugs.map(
+                        (bug, index) => (
+                            <BugCard
+                                key={`${bug.title}-${index}`}
+                                title={bug.title}
+                                description={
+                                    bug.description
+                                }
+                                severity={bug.severity}
+                            />
+                        )
+                    )}
+                </motion.div>
             )}
 
             {/* Suggestions */}
             {result && (
-                <div className="space-y-4">
-
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.7,
+                    }}
+                    className="space-y-4"
+                >
                     <h2 className="text-2xl font-bold">
                         Suggestions
                     </h2>
 
                     {result.suggestions.map(
-                        (suggestion) => (
+                        (
+                            suggestion,
+                            index
+                        ) => (
                             <SuggestionCard
-                                key={suggestion.title}
+                                key={`${suggestion.title}-${index}`}
                                 title={suggestion.title}
-                                description={suggestion.description}
+                                description={
+                                    suggestion.description
+                                }
                             />
                         )
                     )}
-
-                </div>
+                </motion.div>
             )}
 
             {/* Improved Code */}
             {result && (
-                <ImprovedCodeCard
-                    code={result.improvedCode}
-                />
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.75,
+                    }}
+                >
+                    <ImprovedCodeCard
+                        code={result.improvedCode}
+                    />
+                </motion.div>
             )}
 
             {/* Interview Questions */}
             {result && (
-                <div className="grid gap-6">
+                <motion.div
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.8,
+                    }}
+                    className="grid gap-6"
+                >
 
-                    <InterviewSection
-                        title="Beginner Questions"
-                        questions={
-                            result.interviewQuestions
-                                .beginner
-                        }
-                    />
+                            <InterviewTabs
 
-                    <InterviewSection
-                        title="Intermediate Questions"
-                        questions={
-                            result.interviewQuestions
-                                .intermediate
-                        }
-                    />
+                                beginner={
+                                    result.interviewQuestions.beginner
+                                }
 
-                    <InterviewSection
-                        title="Advanced Questions"
-                        questions={
-                            result.interviewQuestions
-                                .advanced
-                        }
-                    />
+                                intermediate={
+                                    result.interviewQuestions.intermediate
+                                }
 
-                </div>
+                                advanced={
+                                    result.interviewQuestions.advanced
+                                }
+
+                            />
+                </motion.div>
             )}
-
         </div>
     );
 }
