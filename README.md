@@ -1,8 +1,8 @@
-# CodeReview AI Lite
+# CodeReviewAI
 
 > AI-powered code review platform built with Next.js, TypeScript, MongoDB Atlas, and Gemini AI.
 
-CodeReview AI Lite is a full-stack web application that performs intelligent code reviews using Google's Gemini API. Developers can submit JavaScript, TypeScript, React, or Node.js code and receive AI-generated insights including code quality assessment, bug detection, security analysis, performance recommendations, maintainability scoring, optimized code generation, and interview questions.
+CodeReviewAI is a full-stack web application that performs intelligent code reviews using Google's Gemini API. Developers can submit JavaScript, TypeScript, React, or Node.js code and receive AI-generated insights including code quality assessment, bug detection, security analysis, performance recommendations, maintainability scoring, optimized code generation, and interview questions.
 
 The project was built to demonstrate practical Full Stack Development and Generative AI integration while following modern software engineering practices.
 
